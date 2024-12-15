@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <!-- 输入框 -->
+    <EditText
+        android:id="@+id/et_goal_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入你想要坚持的目标吧~"
+        android:padding="8dp"
+        android:background="@android:color/transparent"
+        android:textSize="16sp" />
+
+    <!-- 推荐目标 -->
+    <TextView
+        android:id="@+id/tv_recommended_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="推荐目标"
+        android:paddingTop="16dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_goal_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_button_boarder"
+                android:text="早起" />
+            <Button
+                android:id="@+id/btn_goal_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_button_boarder"
+                android:text="早睡" />
+            <Button
+                android:id="@+id/btn_goal_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_button_boarder"
+                android:text="拉伸" />
+            <Button
+                android:id="@+id/btn_goal_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_button_boarder"
+                android:text="阅读" />
+            <Button
+                android:id="@+id/btn_goal_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_button_boarder"
+                android:text="吃水果" />
+            <Button
+                android:id="@+id/btn_goal_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_button_boarder"
+                android:text="吃药" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- 重复设置 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重复设置"
+        android:paddingTop="16dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray" />
+
+    <Switch
+        android:id="@+id/switch_repeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="是否标记为每日任务" />
+
+    <!-- 提醒设置 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提醒设置"
+        android:paddingTop="16dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray" />
+
+    <Switch
+        android:id="@+id/switch_reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="提醒" />
+
+    <Button
+        android:id="@+id/btn_save_goal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="保存"
+        android:backgroundTint="@android:color/holo_blue_light" />
+</LinearLayout>
