@@ -1,6 +1,5 @@
-package com.example.recyclar;
+package com.example.recyclar.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,12 +14,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
-import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.recyclar.R;
+import com.example.recyclar.view.SharedViewModel;
+import com.example.recyclar.model.ToDo;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public class AddToDoFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogStyle);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
     }
 
     @Override

@@ -299,6 +299,45 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_done"
+            app:tint="#A9A9A9" />
+
+        <TextView
+            android:id="@+id/tvFinish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="190dp"
+            android:onClick="onEditTaskClick"
+            android:text="完成任务"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:id="@+id/ivFinish"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_marginEnd="0dp"
+            android:src="@drawable/ic_arrow_more"
+            app:tint="#000080" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/button_boarder"
+        android:clickable="true"
+        android:padding="5dp">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/ic_pomodoro"
             app:tint="#A9A9A9" />
 
@@ -315,7 +354,7 @@
             android:textSize="30sp" />
 
         <ImageView
-            android:id="@+id/ivDelete"
+            android:id="@+id/ivPomodoro"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"

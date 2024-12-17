@@ -35,6 +35,7 @@ dependencies {
     //noinspection UseTomlInstead
     implementation ("androidx.recyclerview:recyclerview:1.3.0")
     implementation("com.haibin:calendarview:3.7.1")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation (libs.appcompat.v7)
     implementation (libs.design)
     implementation (libs.floatingactionbutton)

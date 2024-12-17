@@ -1,9 +1,7 @@
-package com.example.recyclar;
+package com.example.recyclar.activity;
 
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,15 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.recyclar.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +31,8 @@ public class TaskDetailActivity extends AppCompatActivity{
     private TextView tvTaskStatus;
     private TextView tvEditTask;
     private TextView tvDeleteTask;
+    private TextView tvFinish;
+    private TextView tvPomodoro;
     private ImageView ivBack;
     private Button btnConfirm;
 
@@ -50,7 +46,7 @@ public class TaskDetailActivity extends AppCompatActivity{
     private static String updatedDescription;
     private static String updatedPriority;
     private static String updatedTime;
-
+    private static String updatedStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +59,8 @@ public class TaskDetailActivity extends AppCompatActivity{
         tvTaskStatus = findViewById(R.id.tvTaskStatus);
         tvEditTask = findViewById(R.id.tvEditTask);
         tvDeleteTask = findViewById(R.id.tvDeleteTask);
+        tvFinish = findViewById(R.id.tvFinish);
+        tvPomodoro = findViewById(R.id.tvPomodoro);
         btnConfirm = findViewById(R.id.btnConfirm);
         ivBack = findViewById(R.id.ivBack);
 
@@ -75,7 +73,7 @@ public class TaskDetailActivity extends AppCompatActivity{
 
         tvTaskTitle.setText(title);
         tvTaskDescription.setText(description);
-        tvTaskPriority.setText(priorityText[Integer.parseInt(priority)]);
+        tvTaskPriority.setText(priorityText[Integer.parseInt(priority)-1]);
         tvTaskDate.setText(time);
         tvTaskStatus.setText(statusText[Integer.parseInt(status)]);
 
@@ -94,6 +92,25 @@ public class TaskDetailActivity extends AppCompatActivity{
             finish();
         });
 
+        tvPomodoro.setOnClickListener(v -> {
+            int duration = 25;
+            Intent pomodoroIntent = new Intent(this, ClockActivity.class);
+            intent.putExtra("matters", title); // 传递标题
+            intent.putExtra("time", duration); // 传递时间
+            startActivity(pomodoroIntent);
+            // Toast.makeText(this, "标题: " + title + ", 时长: " + duration, Toast.LENGTH_SHORT).show();
+        });
+
+        tvFinish.setOnClickListener(v->{
+            // 标记为完成
+            updatedStatus = String.valueOf(2);
+            tvTaskStatus.setText(statusText[2]);
+            updatedTitle = title;
+            updatedDescription = description;
+            updatedPriority = priority;
+            updatedTime = time;
+        });
+
         btnConfirm.setOnClickListener(v->{
             Intent resultIntent = new Intent();
             System.out.println(title);
@@ -102,7 +119,7 @@ public class TaskDetailActivity extends AppCompatActivity{
             resultIntent.putExtra("comment", updatedDescription);
             resultIntent.putExtra("priority", updatedPriority); // Updated priority
             resultIntent.putExtra("time", updatedTime); // Updated date
-            resultIntent.putExtra("status", status); // Updated date
+            resultIntent.putExtra("status", updatedStatus); // Updated date
 
             setResult(RESULT_OK, resultIntent);
             finish(); // Finish the activity and return to HomeFragment
@@ -130,9 +147,9 @@ public class TaskDetailActivity extends AppCompatActivity{
         bottomSheetDialog.show();
 
         tv_title.setText("修改任务");
-        etTaskTitle.setHint(title);
-        etTaskDescription.setHint(description);
-        etTaskPriority.setHint(priority);
+        etTaskTitle.setText(title);
+        etTaskDescription.setText(description);
+        etTaskPriority.setText(priority);
 
         // 日期选择
         final Calendar calendar = Calendar.getInstance();
@@ -154,13 +171,19 @@ public class TaskDetailActivity extends AppCompatActivity{
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat sDateFormat = new SimpleDateFormat(pattern);
             updatedTime = sDateFormat.format(date);
+            updatedStatus = status;
             if (title.isEmpty() || description.isEmpty() || priority.isEmpty()) {
                 Toast.makeText(this, "请填写完整信息", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            if(Integer.parseInt(updatedPriority) < 1 || Integer.parseInt(updatedPriority) > 4){
+                Toast.makeText(this, "请输入有效优先级：1 ~ 4", Toast.LENGTH_SHORT).show();
+            }
+            else {
                 tvTaskTitle.setText(updatedTitle);
                 tvTaskDescription.setText(updatedDescription);
-                tvTaskPriority.setText(priorityText[Integer.parseInt(updatedPriority)]);
+                tvTaskPriority.setText(priorityText[Integer.parseInt(updatedPriority)-1]);
                 tvTaskDate.setText(updatedTime);
+
                 if (!isFinishing()) { // 确保 Activity 没有被销毁
                     bottomSheetDialog.dismiss();
                 }

@@ -1,4 +1,4 @@
-package com.example.recyclar;
+package com.example.recyclar.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recyclar.R;
+import com.example.recyclar.model.Task;
 
 import java.util.List;
 
@@ -35,6 +38,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
         TextView tvTitle;
         TextView tvComment;
         TextView tvTime;
+
 
         public ViewHolder(View view) {
             super(view);

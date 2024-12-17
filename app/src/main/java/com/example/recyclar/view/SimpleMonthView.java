@@ -1,4 +1,4 @@
-package com.example.recyclar;
+package com.example.recyclar.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

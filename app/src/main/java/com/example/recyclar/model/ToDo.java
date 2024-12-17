@@ -1,12 +1,5 @@
-package com.example.recyclar;
+package com.example.recyclar.model;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 
 /**

@@ -1,6 +1,6 @@
-package com.example.recyclar;
+package com.example.recyclar.fragment;
 
-import static com.example.recyclar.TaskDatabaseHelper.TABLE_TODOS;
+import static com.example.recyclar.model.TaskDatabaseHelper.TABLE_TODOS;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -20,6 +20,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.recyclar.model.EveryToDo;
+import com.example.recyclar.R;
+import com.example.recyclar.view.SharedViewModel;
+import com.example.recyclar.model.TaskDatabaseHelper;
+import com.example.recyclar.model.ToDo;
+import com.example.recyclar.adapter.ToDoAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
@@ -27,7 +33,6 @@ import com.haibin.calendarview.CalendarView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +42,7 @@ import java.util.Objects;
  * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CalendarFragment extends Fragment implements ToDoAdapter.OnToDoItemChangeListener{
+public class CalendarFragment extends Fragment implements ToDoAdapter.OnToDoItemChangeListener {
     private ImageView ivToggle;
     private CalendarView calendarView;
     private boolean isExpanded = false;
@@ -242,7 +247,7 @@ public class CalendarFragment extends Fragment implements ToDoAdapter.OnToDoItem
 
     @Override
     public void onStatusChanged(EveryToDo item, boolean isCompleted) {
-        Toast.makeText(getContext(), "recyclerView 变化：", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "recyclerView 变化：", Toast.LENGTH_SHORT).show();
         // 状态切换时的回调
         if (isCompleted) {
             todoList.remove(item);
@@ -267,6 +272,12 @@ public class CalendarFragment extends Fragment implements ToDoAdapter.OnToDoItem
         } else {
             todoList.remove(item);
         }
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = TaskDatabaseHelper.COLUMN_EVERY_TODO_ID + " = ?";
+        String[] whereArgs = {item.getEveryId()};
+        db.delete(TaskDatabaseHelper.TABLE_EVERY_TODOS, whereClause, whereArgs);
+        db.close();
 
         todoAdapter.notifyDataSetChanged();
         doneAdapter.notifyDataSetChanged();
@@ -408,13 +419,13 @@ public class CalendarFragment extends Fragment implements ToDoAdapter.OnToDoItem
             long result = db.insert("every_todos", null, values);
             if (result == -1) {
                 System.out.println("插入失败");
-                Toast.makeText(getContext(), "插入 EveryToDo 失败", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "插入 EveryToDo 失败", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "成功添加 EveryToDo", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "成功添加 EveryToDo", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "数据库错误: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getContext(), "数据库错误: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         db.close();

@@ -1,9 +1,6 @@
-package com.example.recyclar;
+package com.example.recyclar.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 
 public class Task implements Serializable {
@@ -13,11 +10,6 @@ public class Task implements Serializable {
     private int priority;
     private int status;
     private String date;
-
-    // 用于保存已生成的ID
-    // ToDo 写入 SharedPereference
-    private static Set<Integer> generatedIds = new HashSet<>();
-    private static Random random = new Random();
 
     // 构造函数
     public Task(String t, String desc, int p, String date, int s) {

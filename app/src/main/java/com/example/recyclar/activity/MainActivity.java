@@ -1,19 +1,23 @@
-package com.example.recyclar;
+package com.example.recyclar.activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.example.recyclar.fragment.CalendarFragment;
+import com.example.recyclar.fragment.HomeFragment;
+import com.example.recyclar.R;
+import com.example.recyclar.fragment.TimerFragment;
+import com.example.recyclar.fragment.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity{
     //private FloatingActionButton fab;
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity{
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("NowOrNever");
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
         loadFragment(new HomeFragment());
 
         // 设置 BottomNavigationView 点击事件
@@ -58,6 +63,12 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView mSearchView = (SearchView) searchItem.getActionView();
+        /*assert mSearchView != null;
+        mSearchView.setIconified(false);
+        mSearchView.setIconifiedByDefault(false);
+        mSearchView.onActionViewExpanded();*/
         return true;
     }
 

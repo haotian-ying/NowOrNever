@@ -1,12 +1,9 @@
-package com.example.recyclar;
-
-import static android.content.Context.MODE_PRIVATE;
+package com.example.recyclar.fragment;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -17,13 +14,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.recyclar.R;
+import com.example.recyclar.model.Task;
+import com.example.recyclar.adapter.TaskAdapter;
+import com.example.recyclar.model.TaskDatabaseHelper;
+import com.example.recyclar.activity.TaskDetailActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,9 +54,14 @@ public class HomeFragment extends Fragment {
     private RecyclerView rvTask;//定义RecyclerView
     private BottomSheetBehavior mBottomSheetBehavior; //底部bottom sheet
     private FloatingActionButton fab;
+    private ProgressBar progressBar;
+    private TextView tv_progress_desc;
+    private TextView tv_progress_percentage;
     private TaskDatabaseHelper dbHelper;
     private ActivityResultLauncher<Intent> resultLauncher;
     private String taskItemId;
+    // 今日任务情况
+    private int progress = 0;
     // status对应具体状态
     private int STATUS_TODO = 0;
     private int STATUS_INPROGRESS = 1;
@@ -113,6 +123,10 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         rvTask = (RecyclerView) view.findViewById(R.id.rvTask);
         fab = view.findViewById(R.id.fab);
+        progressBar = view.findViewById(R.id.progressBar);
+        tv_progress_desc = view.findViewById(R.id.tv_progress_desc);
+        tv_progress_percentage = view.findViewById(R.id.tv_progress_percentage);
+
 //        bottomSheet = view.findViewById(R.id.bottom_sheet);
 //        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 //        mBottomSheetBehavior.setState(STATE_COLLAPSED);
@@ -130,7 +144,7 @@ public class HomeFragment extends Fragment {
             taskItemId = task.getId();
             System.out.println("全局"+String.valueOf(taskItemId));
             // 获取点击位置
-            Intent intent = new Intent(getActivity(),TaskDetailActivity.class);
+            Intent intent = new Intent(getActivity(), TaskDetailActivity.class);
 //            Bundle bundle = new Bundle();
             intent.putExtra("title",task.getTitle());
             intent.putExtra("description",task.getDescription());
@@ -143,10 +157,33 @@ public class HomeFragment extends Fragment {
 
         // 加载数据
         loadTasksFromDatabase();
-
+        updateProgressBar();
         fab.setOnClickListener(v -> showBottomSheetDialog());
-
         return view;
+    }
+
+    // 更新进度条
+    private void updateProgressBar() {
+        int totalTasks = taskList.size();
+        if (totalTasks == 0) {
+            progress = 0; // 如果没有任务，进度为0
+            progressBar.setProgress(0); // 设置进度条的值
+            tv_progress_desc.setText(String.valueOf(0));
+            tv_progress_percentage.setText(String.valueOf(0));
+        }
+
+        int completedTasks = 0;
+        for (Task task : taskList) {
+            if (task.getStatus() == STATUS_DONE) {
+                completedTasks++;
+            }
+        }
+
+        progress = (int) ((completedTasks / (float) totalTasks) * 100);
+        progressBar.setProgress(progress); // 设置进度条的值
+        Log.d("MainActivity", "progress:" + progress);
+        tv_progress_desc.setText(String.valueOf(completedTasks));
+        tv_progress_percentage.setText(String.valueOf(progress));
     }
 
     private void showBottomSheetDialog() {
@@ -208,33 +245,18 @@ public class HomeFragment extends Fragment {
                 if (rowId != -1) {
                     taskList.add(newTask);
                     taskAdapter.notifyItemInserted(taskList.size() - 1);
+                    updateProgressBar();
                     Toast.makeText(getContext(), "任务已添加", Toast.LENGTH_SHORT).show();
                     bottomSheetDialog.dismiss();
                 }
             }
         });
 
+
         btnCancel.setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
         });
-    }
 
-    private void showTaskDetail(Task task) {
-        Toast.makeText(getContext(), "Task clicked: " + task.getTitle(), Toast.LENGTH_SHORT).show();
-        // 点击 RecyclerView 中的卡片，弹出 BottomSheetDialog 显示任务详情
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetStyle);
-        View bottomSheetView = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_task_detail, null);
-
-        // 绑定任务详情 fragment
-        TaskDetailFragment taskDetailFragment = TaskDetailFragment.newInstance(task);
-
-        bottomSheetDialog.setContentView(bottomSheetView);
-        bottomSheetDialog.show();
-
-        // 将任务详情 fragment 加入到 BottomSheet 中
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.bottom_sheet_fragment_container, taskDetailFragment)
-                .commit();
     }
 
     private void initTask() {
@@ -308,6 +330,7 @@ public class HomeFragment extends Fragment {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String whereClause = TaskDatabaseHelper.COLUMN_TASK_ID + " = ?";
         String[] whereArgs = {String.valueOf(taskItemId)};
+        updateProgressBar();
         db.delete(TaskDatabaseHelper.TABLE_TASKS, whereClause, whereArgs);
         db.close();
     }
@@ -333,6 +356,8 @@ public class HomeFragment extends Fragment {
 
         String whereClause = TaskDatabaseHelper.COLUMN_TASK_ID + " = ?";
         String[] whereArgs = {String.valueOf(taskItemId)};
+
+        updateProgressBar();
 
         db.update(TaskDatabaseHelper.TABLE_TASKS, values, whereClause, whereArgs);
         db.close();

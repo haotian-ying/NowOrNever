@@ -13,4 +13,10 @@
         android:icon="@drawable/ic_settings"
         android:title="设置"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_pomodoro"
+        android:icon="@drawable/ic_pomodoro"
+        android:title="开始专注"
+        app:showAsAction="never" />
 </menu>

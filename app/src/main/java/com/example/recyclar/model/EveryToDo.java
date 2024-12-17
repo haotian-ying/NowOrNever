@@ -1,12 +1,10 @@
-package com.example.recyclar;
+package com.example.recyclar.model;
 
-import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-public class EveryToDo extends ToDo{
+public class EveryToDo extends ToDo {
     private String every_id;                 // 唯一ID
     //private int idToDo;             // 所属 ToDo 的ID
     private String date;            // 日期 (格式: yyyy-MM-dd)

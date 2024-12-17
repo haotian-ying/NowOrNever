@@ -1,19 +1,20 @@
-package com.example.recyclar;
+package com.example.recyclar.adapter;
 
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recyclar.model.EveryToDo;
+import com.example.recyclar.R;
 
 import java.util.List;
 

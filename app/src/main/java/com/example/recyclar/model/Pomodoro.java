@@ -1,4 +1,4 @@
-package com.example.recyclar;
+package com.example.recyclar.model;
 
 public class Pomodoro {
     private final int CountDown;
